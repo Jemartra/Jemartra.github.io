@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Amortization Calculator</title>
+</head>
+<body>
+<h2>Loan and Amortization Calculator</h2>
+<form id="loanForm">
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Loan Number</th>
+            <th>Borrowing Year</th>
+            <th>Loan Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td><input type="number" id="borrowingYear1" required></td>
+            <td><input type="number" id="loanAmt1" step="0.01" required></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><input type="number" id="borrowingYear2" required></td>
+            <td><input type="number" id="loanAmt2" step="0.01" required></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><input type="number" id="borrowingYear3" required></td>
+            <td><input type="number" id="loanAmt3" step="0.01" required></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><input type="number" id="borrowingYear4" required></td>
+            <td><input type="number" id="loanAmt4" step="0.01" required></td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<button type="button" onclick="calculateDebt()">Calculate</button>
+</form>
+<h3>Results</h3>
+<p id="totalDebt">Total Debt: </p>
+<p id="amortization">Annual Amortization Payments: </p>
+<script>
+function calculateDebt() {
+    const borrowingYear1 = parseInt(document.getElementById('borrowingYear1').value);
+    const loanAmt1 = parseFloat(document.getElementById('loanAmt1').value);
+    const borrowingYear2 = parseInt(document.getElementById('borrowingYear2').value);
+    const loanAmt2 = parseFloat(document.getElementById('loanAmt2').value);
+    const borrowingYear3 = parseInt(document.getElementById('borrowingYear3').value);
+    const loanAmt3 = parseFloat(document.getElementById('loanAmt3').value);
+    const borrowingYear4 = parseInt(document.getElementById('borrowingYear4').value);
+    const loanAmt4 = parseFloat(document.getElementById('loanAmt4').value);
+    
+    const interestRate = 0.05; // 5% interest
+    const yearsBetween1and4 = borrowingYear4 - borrowingYear1;
+
+    // Calculate total debt by applying interest based on the borrowing year
+    let totalDebt = loanAmt1 * Math.pow(1 + interestRate, yearsBetween1and4) +
+                    loanAmt2 * Math.pow(1 + interestRate, yearsBetween1and4 - 1) +
+                    loanAmt3 * Math.pow(1 + interestRate, yearsBetween1and4 - 2) +
+                    loanAmt4; // Loan 4 has no interest accumulated yet
+
+    const repaymentYears = 10;
+    const amortization = (totalDebt * interestRate) / (1 - Math.pow(1 + interestRate, -repaymentYears));
+
+    // Display the results
+    document.getElementById('totalDebt').textContent = `Total Debt: $${totalDebt.toFixed(2)}`;
+    document.getElementById('amortization').textContent = `Annual Amortization Payments: $${amortization.toFixed(2)}`;
+}
+</script>
+</body>
+</html>
